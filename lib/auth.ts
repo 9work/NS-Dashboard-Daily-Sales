@@ -5,7 +5,14 @@ import { cookies } from "next/headers";
 const JWT_SECRET = "your-secret-key";
 
 const USERS: Record<string, any> = {
-  "admin@example.com": { password: bcrypt.hashSync("admin123", 10), permission_type: "admin" }
+  "mahmoud.bayoumi@nstextile-eg.com": { 
+    password: bcrypt.hashSync("123456", 10), 
+    permission_type: "super_admin" 
+  },
+  "admin@example.com": { 
+    password: bcrypt.hashSync("admin123", 10), 
+    permission_type: "admin" 
+  }
 };
 
 export async function authenticateUser(email: string, password: string) {
