@@ -1,25 +1,32 @@
 import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 
 const JWT_SECRET = "your-secret-key";
 
+// مؤقتاً بدون تشفير - للتجربة
 const USERS: Record<string, any> = {
   "mahmoud.bayoumi@nstextile-eg.com": { 
-    password: bcrypt.hashSync("123456", 10), 
+    password: "123456",  // نص عادي بدون تشفير
     permission_type: "super_admin" 
-  },
-  "admin@example.com": { 
-    password: bcrypt.hashSync("admin123", 10), 
-    permission_type: "admin" 
   }
 };
 
 export async function authenticateUser(email: string, password: string) {
+  console.log("🔐 محاولة تسجيل دخول:", email);
+  
   const user = USERS[email];
-  if (!user) return null;
-  const isValid = await bcrypt.compare(password, user.password);
-  if (!isValid) return null;
+  if (!user) {
+    console.log("❌ المستخدم غير موجود");
+    return null;
+  }
+  
+  // مقارنة نص عادي
+  if (password !== user.password) {
+    console.log("❌ كلمة المرور خاطئة");
+    return null;
+  }
+  
+  console.log("✅ تم تسجيل الدخول بنجاح");
   return { email, permission_type: user.permission_type };
 }
 
